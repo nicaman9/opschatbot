@@ -1,2 +1,7 @@
-"procedure_name,procedure_description"
-"Reset Password,1. Go to Settings. 2. Click on 'Change Password'. 3. Enter new password and confirm."
+procedure_name,steps,link
+New User Setup,1. Create user account 2. Set initial password 3. Configure user permissions 4. Send welcome email,https://example.com/
+System Maintenance,1. Backup all data 2. Run system diagnostics 3. Apply pending updates 4. Verify system health,https://example.com/
+Data Export,1. Select data to export 2. Choose export format 3. Select destination 4. Click Export button,https://example.com/
+Emergency Shutdown,1. Save all work 2. Close all applications 3. Initiate shutdown sequence 4. Verify system is off,https://example.com/
+Network Configuration,1. Access network settings 2. Configure IP address 3. Set up DNS servers 4. Test connection ,https://example.com/
+Test procedure,1.) Test procedure 2.)Test procedure,http://example.com
