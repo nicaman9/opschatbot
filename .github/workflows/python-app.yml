@@ -15,7 +15,7 @@ permissions:
 jobs:
   build:
 
-    runs-on: windows11-latest
+    runs-on: uubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
