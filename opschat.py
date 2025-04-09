@@ -542,9 +542,9 @@ class ChatbotApp:
     def submit_missing(self, message, modal_frame):
         try:
             # Email configuration
-            sender_email = "your-email@example.com"  # Replace with your email
-            receiver_email = "admin@example.com"     # Replace with admin email
-            password = "your-password"               # Replace with your email password
+            sender_email = "nic20370@gmail.com" 
+            receiver_email = "nicaman9@gmail.com" 
+            password = "Serviceaccount1!"
             
             # Create message
             msg = MIMEMultipart()
