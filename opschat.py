@@ -303,85 +303,76 @@ class ChatbotApp:
     def process_message(self, message):
         # Extract keywords from message
         keywords = self.extract_keywords(message)
-        
+
         # Search in QA data
         qa_results = self.search_in_dataframe(self.qa_data, keywords)
-        
+
         # Search in procedures data
         procedure_results = self.search_in_dataframe(self.procedures_data, keywords)
-        
+
         # Store current results
         self.current_results["qa"] = qa_results
         self.current_results["procedures"] = procedure_results
-        
-        # Add to all results for reference
+
         for result in qa_results:
             if result not in self.all_results["qa"]:
                 self.all_results["qa"].append(result)
-                
+
         for result in procedure_results:
             if result not in self.all_results["procedures"]:
                 self.all_results["procedures"].append(result)
-        
-        # Generate response
+
         if qa_results or procedure_results:
             self.chat_display.config(state=tk.NORMAL)
-            
-            # Create a frame for the bot message with profile image
+
             bot_frame = ttk.Frame(self.chat_display)
             self.chat_display.window_create(tk.END, window=bot_frame)
-            
-            # Add profile image if available
+
             if hasattr(self, 'profile_image') and self.profile_image:
                 profile_label = ttk.Label(bot_frame, image=self.profile_image)
                 profile_label.pack(side=tk.LEFT, padx=(0, 5))
-            
-            # Start a new bot message
+
             self.chat_display.insert(tk.END, f"{self.bot_name}: ", "bot")
-            
-            # Store the start of the message
-            message_start = self.chat_display.index("end-1c")
-            
-            # Add the main message
-            self.chat_display.insert(tk.END, "I found some information that might help:\n\n")
-            
-            # Create a list to store all tags for this message
+
             message_tags = [("bot", "end-2c linestart", "end-1c")]
-            
+
+            self.chat_display.insert(tk.END, "Here's the most relevant result I found:\n\n")
+
+            # Display best match
             if qa_results:
+                best = qa_results[0]
+                self.chat_display.insert(tk.END, f"Q: {best['question']}\nA: {best['answer']}\n\n")
+            elif procedure_results:
+                best = procedure_results[0]
+                self.chat_display.insert(tk.END, f"Procedure: {best['procedure_name']}\nSteps: {best['steps']}\n\n")
+
+            self.chat_display.insert(tk.END, "Other relevant entries:\n\n")
+
+            # List all QA links
+            if len(qa_results) > 0:
                 self.chat_display.insert(tk.END, "Q&A Results:\n")
                 for i, result in enumerate(qa_results):
-                    # Get the index in all_results
                     all_index = self.all_results["qa"].index(result)
-                    link_text = f"➤ {result['question']}\n"
+                    link_text = f"\u27a4 {result['question']}\n"
                     link_start = self.chat_display.index("end-1c")
                     self.chat_display.insert(tk.END, link_text, ("link", f"qa_{all_index}"))
                     link_end = self.chat_display.index("end-1c")
                     self.chat_display.insert(tk.END, "\n")
-                    
-                    # Store the link tag
                     message_tags.append(("link", link_start, link_end))
-                    
-            if procedure_results:
+
+            if len(procedure_results) > 0:
                 self.chat_display.insert(tk.END, "\nProcedures:\n")
                 for i, result in enumerate(procedure_results):
-                    # Get the index in all_results
                     all_index = self.all_results["procedures"].index(result)
-                    link_text = f"➤ {result['procedure_name']}\n"
+                    link_text = f"\u27a4 {result['procedure_name']}\n"
                     link_start = self.chat_display.index("end-1c")
                     self.chat_display.insert(tk.END, link_text, ("link", f"proc_{all_index}"))
                     link_end = self.chat_display.index("end-1c")
                     self.chat_display.insert(tk.END, "\n")
-                    
-                    # Store the link tag
                     message_tags.append(("link", link_start, link_end))
-                    
+
             self.chat_display.insert(tk.END, "\nClick on any item above to see more details.\n\n")
-            
-            # Store the end of the message
-            message_end = self.chat_display.index("end-1c")
-            
-            # Store the message in chat history with all tags
+
             self.chat_history.append({
                 "type": "bot",
                 "text": "I found some information that might help:",
@@ -391,12 +382,12 @@ class ChatbotApp:
                     "procedures": procedure_results
                 }
             })
-            
+
             self.chat_display.see(tk.END)
             self.chat_display.config(state=tk.DISABLED)
         else:
             self.add_bot_message("I couldn't find any specific information about that. Would you like to try rephrasing your question?")
-            
+
     def extract_keywords(self, message):
         if self.use_nltk:
             try:
@@ -656,6 +647,21 @@ class ChatbotApp:
         admin_window = tk.Toplevel(self.root)
         admin_window.title("Admin Panel")
         admin_window.geometry("800x600")
+
+                # Center the window
+        self.root.update_idletasks()
+        main_x = self.root.winfo_x()
+        main_y = self.root.winfo_y()
+        main_width = self.root.winfo_width()
+        main_height = self.root.winfo_height()
+
+        admin_width = 800
+        admin_height = 600
+
+        x_position = main_x + (main_width - admin_width) // 2
+        y_position = main_y + (main_height - admin_height) // 2
+
+        admin_window.geometry(f"{admin_width}x{admin_height}+{x_position}+{y_position}")
         
         # Create notebook for tabs
         notebook = ttk.Notebook(admin_window)
