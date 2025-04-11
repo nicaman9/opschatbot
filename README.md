@@ -33,7 +33,7 @@ pip install -r requirements.txt
 
 1. Run the application:
 ```bash
-python chatbot.py
+python opschat.py
 ```
 
 2. Enter your search query in the search box and click "Send"
