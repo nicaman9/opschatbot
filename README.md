@@ -16,20 +16,18 @@ A Python-based chatbot application with a Tkinter GUI that helps users search th
 - Ticket Creator, Turnover, and Procedures buttons
 
 ## Setup
-
-1. Install the required dependencies:
+1. Download opschat.py and csvs (May need to recreate, see step 4)
+2. Right click in containing folder in file explorer and click 'open in terminal'
+3. Install the required dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
-2. Create two CSV files in the same directory as the script:
+4. Create two CSV files in the same directory as the script:
    - `qa.csv`: Contains Q&A data
    - `procedures.csv`: Contains procedures data
 
-3. Configure the email settings in the `chatbot.py` file:
-   - Replace `your-email@example.com` with your email address
-   - Replace `admin@example.com` with the admin email address
-   - Replace `your-password` with your email password
+5. Configure the email settings in the `opschat.py` file.
 
 ## Usage
 
